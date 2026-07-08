@@ -1,44 +1,74 @@
-# Welcome to your HeroUI Native app 👋
+# Transition Keyboard Demo
 
-This is an [Expo](https://expo.dev) project preconfigured with
-[HeroUI Native](https://heroui.com/docs/native), [Uniwind](https://docs.uniwind.dev)
-(Tailwind CSS for React Native), and [Expo Router](https://docs.expo.dev/router/introduction).
+A focused Expo demo for one mobile UX detail: navigate to an OTP screen, wait
+for the screen transition to finish, then focus the OTP input so the keyboard
+appears after the screen is already visible.
 
-## Get started
+This keeps the keyboard animation from competing with the route animation, which
+is especially noticeable on short OTP or login flows.
 
-1. Install dependencies
+## What It Shows
 
-   ```bash
-   npm install
-   ```
+1. The home screen preloads the keyboard and navigates to `/otp`.
+2. The OTP screen listens for Expo Router's `transitionEnd` event.
+3. Once the opening transition has finished, the `InputOTP` receives focus.
+4. A short fallback handles direct launches or cases where no transition event is
+   emitted.
 
-2. Start the app
+## Stack
 
-   ```bash
-   npx expo start
-   ```
+- [Expo](https://expo.dev/) and [Expo Router](https://docs.expo.dev/router/introduction/)
+- [HeroUI Native](https://heroui.com/en/docs/native/getting-started/quick-start)
+- [HeroUI Native InputOTP](https://heroui.com/en/docs/native/components/input-otp)
+- [Uniwind](https://docs.uniwind.dev/quickstart)
+- [`react-native-keyboard-controller`](https://docs.expo.dev/versions/v57.0.0/sdk/keyboard-controller/)
+- Bun for package management
 
-In the output, you'll find options to open the app in a
+## Run Locally
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Install dependencies:
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+```bash
+bun install
+```
 
-## What's preconfigured
+Start Expo:
 
-- **HeroUI Native** (`heroui-native`) wrapped in `HeroUINativeProvider` and `GestureHandlerRootView` in `src/app/_layout.tsx`
-- **Uniwind** + **Tailwind CSS** wired through `metro.config.js` and `src/global.css`
-- All HeroUI Native mandatory peer dependencies: `react-native-reanimated`, `react-native-gesture-handler`, `react-native-worklets`, `react-native-safe-area-context`, `react-native-svg`, `react-native-screens`
-- `@gorhom/bottom-sheet` for bottom-sheet UIs
-- TypeScript with `strict: true` and `@/*` path alias to `./src/*`
-- React Compiler enabled
+```bash
+bun start
+```
 
-## Learn more
+For a predictable local port:
 
-- [HeroUI Native components](https://heroui.com/docs/native) — full component reference
-- [Expo documentation](https://docs.expo.dev/) — Expo fundamentals and guides
-- [Uniwind documentation](https://docs.uniwind.dev) — Tailwind for React Native
-- [Expo Router](https://docs.expo.dev/router/introduction) — file-based routing
+```bash
+npx expo start --port 8083
+```
+
+Then open the app on iOS or Android from the Expo CLI.
+
+## Useful Commands
+
+```bash
+bun run typecheck
+bun run lint
+bun run format:check
+```
+
+## Project Structure
+
+```text
+src/app/_layout.tsx  Root providers and stack configuration
+src/app/index.tsx    Home screen that preloads the keyboard before navigation
+src/app/otp.tsx      OTP screen that focuses after transitionEnd
+```
+
+## Implementation Notes
+
+- `KeyboardProvider` is mounted once at the root.
+- `KeyboardController.preload()` is called before navigating to the OTP screen.
+- The OTP screen focuses `InputOTP` from a local `transitionEnd` listener.
+- `KeyboardAvoidingView` comes from `react-native-keyboard-controller`.
+- `KeyboardController.dismiss()` runs before going back from the OTP screen.
+
+This repository is intentionally small. It does not include authentication,
+backend calls, analytics, or unrelated screens.
