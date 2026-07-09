@@ -9,11 +9,7 @@ is especially noticeable on short OTP or login flows.
 
 ## Demo Video
 
-<video src="./assets/videos/autofocus-demo.mp4" controls>
-  <a href="./assets/videos/autofocus-demo.mp4">Watch the demo video</a>
-</video>
-
-[Watch the demo video](./assets/videos/autofocus-demo.mp4)
+![Autofocus demo](./assets/videos/autofocus-demo.gif)
 
 ## UX Problem
 
