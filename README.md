@@ -7,6 +7,14 @@ keyboard appears after the screen is already visible.
 This keeps the keyboard animation from competing with the route animation, which
 is especially noticeable on short OTP or login flows.
 
+## Demo Video
+
+<video src="./assets/videos/autofocus-demo.mp4" controls>
+  <a href="./assets/videos/autofocus-demo.mp4">Watch the demo video</a>
+</video>
+
+[Watch the demo video](./assets/videos/autofocus-demo.mp4)
+
 ## UX Problem
 
 OTP screens look simple, but their timing is easy to get wrong. The route push,
